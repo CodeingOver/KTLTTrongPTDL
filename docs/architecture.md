@@ -35,7 +35,7 @@ Hệ thống được xây dựng để thu thập, làm sạch và phân tích 
 
 ## 4. Kiến trúc thành phần (Component Architecture)
 
-- Thành phần Thu thập dữ liệu: thu URL sản phẩm laptop từ trang tìm kiếm FPTShop, sau đó đọc dữ liệu đánh giá hiển thị trong HTML từng trang sản phẩm.
+- Thành phần Thu thập dữ liệu: thu URL sản phẩm laptop từ trang tìm kiếm FPTShop, sau đó đọc dữ liệu đánh giá hiển thị trong HTML từng trang sản phẩm và trích metadata sản phẩm (tên, hãng, giá, ảnh, tổng lượt đánh giá).
 - Thành phần Tiền xử lý: chuẩn hóa văn bản, xử lý thiếu dữ liệu, loại trùng và chuẩn hóa kiểu dữ liệu.
 - Thành phần Phân tích mô tả: tính thống kê cơ bản, tạo biểu đồ phân bố và xu hướng.
 - Thành phần Báo cáo: tổng hợp bảng biểu ra CSV để chèn vào báo cáo Word.
@@ -43,7 +43,7 @@ Hệ thống được xây dựng để thu thập, làm sạch và phân tích 
 ## 5. Luồng dữ liệu (Data Flow)
 
 1. Notebook thu thập gọi trang tìm kiếm FPTShop để lấy danh sách URL sản phẩm laptop.
-2. Notebook đọc dữ liệu đánh giá hiển thị trong HTML từng trang sản phẩm và lưu dữ liệu thô vào CSV.
+2. Notebook đọc dữ liệu đánh giá hiển thị trong HTML từng trang sản phẩm, trích metadata sản phẩm/review và lưu dữ liệu thô vào CSV.
 3. Notebook tiền xử lý đọc CSV thô, làm sạch văn bản và tạo dữ liệu sạch.
 4. Hệ thống phân tích dữ liệu sạch để tạo bảng thống kê và biểu đồ.
 5. Notebook tổng hợp xuất các bảng cuối cùng cho phần phụ lục báo cáo.
@@ -110,12 +110,21 @@ sequenceDiagram
 erDiagram
     REVIEW {
         string review_id PK
-        int shop_id
-        int item_id
+      string shop_id
+      string item_id
+      string product_name
+      string brand
+      int price
+      int final_price
+      int rating_count_total
         string user_id
         int rating_star
+      string review_title
         string comment
         string comment_clean
+      bool verified_purchase
+      string image_product
+      string image_review
         datetime created_at
         int like_count
         int review_len

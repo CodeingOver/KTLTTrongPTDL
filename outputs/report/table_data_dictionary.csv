@@ -1,0 +1,12 @@
+﻿ten_cot,y_nghia
+review_id,Mã review duy nhất
+shop_id,Nguồn bán hoặc mã shop (FPTShop)
+item_id,Mã sản phẩm/UPC từ FPTShop
+user_id,Mã hoặc định danh người dùng đánh giá
+rating_star,Số sao đánh giá (1-5)
+comment,Nội dung review gốc
+comment_clean,Nội dung review sau làm sạch
+created_at,Thời gian tạo review
+like_count,Số lượt hữu ích
+review_len,Độ dài ký tự của review
+source,Nguồn dữ liệu (FPTShop)

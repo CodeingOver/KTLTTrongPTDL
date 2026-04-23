@@ -29,7 +29,7 @@ Dự án **không sử dụng Machine Learning** theo yêu cầu phạm vi hiệ
 
 ## Đầu ra chính
 
-- `data/fptshop_laptop_raw.csv`: dữ liệu thô sau crawl.
+- `data/fptshop_laptop_raw.csv`: dữ liệu thô sau crawl (bao gồm thêm metadata như `product_name`, `brand`, `price`, `final_price`, `rating_count_total`, `review_title`, `verified_purchase`, `image_product`, `image_review` nếu có).
 - `data/cleaned_reviews.csv`: dữ liệu đã làm sạch.
 - `outputs/eda_summary.csv`: thống kê mô tả tổng quan.
 - `outputs/chart_rating_distribution.png`: biểu đồ phân bố số sao.
