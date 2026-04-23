@@ -4,6 +4,8 @@
 
 - Bắt đầu triển khai chuyển nguồn thu thập dữ liệu từ Shopee sang FPTShop theo hướng thay thế hoàn toàn.
 - Cập nhật `01_Crawl_Data.ipynb` để crawl HTTP thuần từ FPTShop: thu URL sản phẩm từ trang tìm kiếm, đọc dữ liệu đánh giá hiển thị trong HTML trang chi tiết, chuẩn hóa schema và đổi `source` thành `FPTShop`.
+- Cập nhật `01_Crawl_Data.ipynb` để bỏ giới hạn max thủ công: `max_products=None` và `max_reviews=None` trong luồng chạy chính.
+- Bổ sung cơ chế dừng tự nhiên khi thu URL sản phẩm: dừng khi nhiều trang liên tiếp không có link mới, thay vì dừng theo ngưỡng số lượng cố định.
 - Đổi đầu ra dữ liệu thô từ `data/shopee_laptop_raw.csv` sang `data/fptshop_laptop_raw.csv`.
 - Cập nhật `02_EDA_Preprocessing.ipynb` để đọc dữ liệu thô mới và thêm kiểm tra các cột bắt buộc trước khi tiền xử lý.
 - Cập nhật `03_Report_Artifacts.ipynb` để đồng bộ mô tả data dictionary với nguồn dữ liệu FPTShop và chỉnh lại thông báo tiếng Việt có dấu.
