@@ -2,13 +2,13 @@
 
 ## 1. Tổng quan hệ thống (System Overview)
 
-Hệ thống được xây dựng để thu thập, làm sạch và phân tích dữ liệu đánh giá sản phẩm laptop trên FPTShop. Mục tiêu chính là rút ra các insight mô tả về hành vi đánh giá của người dùng như phân bố số sao, xu hướng thời gian và từ khóa nổi bật trong bình luận.
+Hệ thống được xây dựng để thu thập, làm sạch và phân tích dữ liệu đánh giá sản phẩm laptop trên FPTShop. Phần crawl hiện lấy comment qua API riêng của FPTShop và đi qua nhiều trang bình luận, nhờ đó dữ liệu đầu vào phản ánh đầy đủ hơn hành vi đánh giá của người dùng và cả phản hồi của quản trị viên khi có.
 
 ## 2. Công nghệ sử dụng (Tech Stack)
 
 - Python 3
 - Jupyter Notebook (.ipynb)
-- Requests: gửi HTTP request để lấy danh sách sản phẩm và dữ liệu đánh giá
+- Requests: gửi HTTP request để lấy danh sách sản phẩm và dữ liệu đánh giá qua API comment có phân trang
 - Pandas: xử lý dữ liệu dạng bảng
 - Matplotlib, Seaborn: trực quan hóa dữ liệu
 - Regex, Unicodedata: chuẩn hóa văn bản tiếng Việt
@@ -35,7 +35,7 @@ Hệ thống được xây dựng để thu thập, làm sạch và phân tích 
 
 ## 4. Kiến trúc thành phần (Component Architecture)
 
-- Thành phần Thu thập dữ liệu: thu URL sản phẩm laptop từ trang tìm kiếm FPTShop, sau đó đọc dữ liệu đánh giá hiển thị trong HTML từng trang sản phẩm và trích metadata sản phẩm (tên, hãng, giá, ảnh, tổng lượt đánh giá).
+- Thành phần Thu thập dữ liệu: thu URL sản phẩm laptop từ trang tìm kiếm FPTShop, sau đó gọi API comment của từng sản phẩm theo `skipCount`/`maxResultCount` để lấy nhiều trang phản hồi, đồng thời trích metadata sản phẩm (tên, hãng, giá, ảnh, tổng lượt đánh giá).
 - Thành phần Tiền xử lý: chuẩn hóa văn bản, xử lý thiếu dữ liệu, loại trùng và chuẩn hóa kiểu dữ liệu.
 - Thành phần Phân tích mô tả: tính thống kê cơ bản, tạo biểu đồ phân bố và xu hướng.
 - Thành phần Báo cáo: tổng hợp bảng biểu ra CSV để chèn vào báo cáo Word.
@@ -43,7 +43,7 @@ Hệ thống được xây dựng để thu thập, làm sạch và phân tích 
 ## 5. Luồng dữ liệu (Data Flow)
 
 1. Notebook thu thập gọi trang tìm kiếm FPTShop để lấy danh sách URL sản phẩm laptop.
-2. Notebook đọc dữ liệu đánh giá hiển thị trong HTML từng trang sản phẩm, trích metadata sản phẩm/review và lưu dữ liệu thô vào CSV.
+2. Notebook gọi API comment của từng sản phẩm theo nhiều trang, trích metadata sản phẩm/review, đồng thời giữ lại phản hồi của quản trị viên nếu có, rồi lưu dữ liệu thô vào CSV.
 3. Notebook tiền xử lý đọc CSV thô, làm sạch văn bản và tạo dữ liệu sạch.
 4. Hệ thống phân tích dữ liệu sạch để tạo bảng thống kê và biểu đồ.
 5. Notebook tổng hợp xuất các bảng cuối cùng cho phần phụ lục báo cáo.
@@ -62,6 +62,9 @@ Hệ thống được xây dựng để thu thập, làm sạch và phân tích 
 - FPTShop Product Page:
   - Endpoint: `https://fptshop.com.vn/may-tinh-xach-tay/...`
   - Dùng để trích xuất dữ liệu đánh giá hiển thị trong HTML
+- FPTShop Comment API:
+  - Endpoint: `https://papi.fptshop.com.vn/gw/v1/public/bff-before-order/comment/list`
+  - Dùng để lấy comment theo phân trang với `content.id`, `skipCount`, `maxResultCount` và `sortMethod`
 - Tệp đầu ra lõi:
   - `data/fptshop_laptop_raw.csv`
   - `data/cleaned_reviews.csv`
@@ -72,14 +75,15 @@ Hệ thống được xây dựng để thu thập, làm sạch và phân tích 
 ```mermaid
 graph TD
     A[Trang tìm kiếm laptop FPTShop] --> B[01_Crawl_Data.ipynb]
-    B --> C[data/fptshop_laptop_raw.csv]
-    C --> D[02_EDA_Preprocessing.ipynb]
-    D --> E[data/cleaned_reviews.csv]
-    D --> F[outputs: biểu đồ và bảng thống kê]
-    E --> G[03_Report_Artifacts.ipynb]
-    F --> G
-    G --> H[outputs/report/*.csv]
-    H --> I[Báo cáo Word môn học]
+    B --> C[FPTShop Comment API theo trang]
+    C --> D[data/fptshop_laptop_raw.csv]
+    D --> E[02_EDA_Preprocessing.ipynb]
+    E --> F[data/cleaned_reviews.csv]
+    E --> G[outputs: biểu đồ và bảng thống kê]
+    F --> H[03_Report_Artifacts.ipynb]
+    G --> H
+    H --> I[outputs/report/*.csv]
+    I --> J[Báo cáo Word môn học]
 ```
 
 ```mermaid
@@ -87,6 +91,7 @@ sequenceDiagram
     actor SV as Sinh viên
     participant NB1 as 01_Crawl_Data
     participant WEB as FPTShop Web
+    participant API as FPTShop Comment API
     participant CSV1 as fptshop_laptop_raw.csv
     participant NB2 as 02_EDA_Preprocessing
     participant CSV2 as cleaned_reviews.csv
@@ -94,7 +99,8 @@ sequenceDiagram
 
     SV->>NB1: Chạy crawler với URL tìm kiếm FPTShop
     NB1->>WEB: Lấy danh sách URL sản phẩm laptop
-    NB1->>WEB: Đọc dữ liệu đánh giá trong HTML từng sản phẩm
+    NB1->>WEB: Đọc HTML sản phẩm để lấy metadata và content.id
+    NB1->>API: Gọi comment/list nhiều lần theo skipCount/maxResultCount
     NB1->>NB1: Chuẩn hóa schema + chống trùng + xử lý lỗi
     NB1->>CSV1: Lưu dữ liệu thô
     SV->>NB2: Chạy tiền xử lý và EDA

@@ -23,7 +23,7 @@ Dự án **không sử dụng Machine Learning** theo yêu cầu phạm vi hiệ
 
 ## Quy trình chạy
 
-1. Mở `01_Crawl_Data.ipynb`, chạy toàn bộ notebook để tự động thu danh sách URL sản phẩm laptop từ FPTShop và crawl dữ liệu đánh giá hiển thị.
+1. Mở `01_Crawl_Data.ipynb`, chạy toàn bộ notebook để tự động thu danh sách URL sản phẩm laptop từ FPTShop và crawl dữ liệu đánh giá qua API comment có phân trang (1, 2, 3, ...).
 2. Mở `02_EDA_Preprocessing.ipynb` để làm sạch dữ liệu và tạo biểu đồ, bảng thống kê.
 3. Mở `03_Report_Artifacts.ipynb` để gom các bảng CSV dùng trực tiếp cho báo cáo Word.
 
@@ -38,6 +38,7 @@ Dự án **không sử dụng Machine Learning** theo yêu cầu phạm vi hiệ
 
 ## Lưu ý khi crawl FPTShop
 
-- Crawler hiện chạy theo hướng HTTP thuần (`requests`) và ưu tiên đọc dữ liệu đánh giá hiển thị trong HTML trang sản phẩm.
+- Crawler hiện chạy theo hướng HTTP thuần (`requests`) và lấy comment từ API `bff-before-order/comment/list` của FPTShop, sau đó lặp `skipCount`/`maxResultCount` để đi qua các trang comment.
 - FPTShop có thể thay đổi cấu trúc dữ liệu theo thời điểm, nên cần theo dõi log số lượng review thu được ở mỗi sản phẩm.
 - Nếu gặp lỗi liên tiếp hoặc dữ liệu thu được thấp, tăng độ trễ giữa các request và giảm số lượng sản phẩm mỗi lượt chạy.
+- Một số phản hồi của quản trị viên có thể đi kèm trong `reply_content` nếu sản phẩm có comment được trả lời trực tiếp.
