@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### 2026-04-23
+
+- Bắt đầu triển khai chuyển nguồn thu thập dữ liệu từ Shopee sang FPTShop theo hướng thay thế hoàn toàn.
+- Cập nhật `01_Crawl_Data.ipynb` để crawl HTTP thuần từ FPTShop: thu URL sản phẩm từ trang tìm kiếm, đọc dữ liệu đánh giá hiển thị trong HTML trang chi tiết, chuẩn hóa schema và đổi `source` thành `FPTShop`.
+- Đổi đầu ra dữ liệu thô từ `data/shopee_laptop_raw.csv` sang `data/fptshop_laptop_raw.csv`.
+- Cập nhật `02_EDA_Preprocessing.ipynb` để đọc dữ liệu thô mới và thêm kiểm tra các cột bắt buộc trước khi tiền xử lý.
+- Cập nhật `03_Report_Artifacts.ipynb` để đồng bộ mô tả data dictionary với nguồn dữ liệu FPTShop và chỉnh lại thông báo tiếng Việt có dấu.
+- Đồng bộ `README.md` và `docs/architecture.md` theo kiến trúc mới dựa trên FPTShop.
+
 ### 2026-04-14
 
 - Khởi tạo pipeline triển khai cho đề tài phân tích đánh giá laptop Shopee theo phạm vi không Machine Learning.

@@ -1,14 +1,14 @@
-# Kiến trúc dự án phân tích dữ liệu đánh giá laptop Shopee
+# Kiến trúc dự án phân tích dữ liệu đánh giá laptop FPTShop
 
 ## 1. Tổng quan hệ thống (System Overview)
 
-Hệ thống được xây dựng để thu thập, làm sạch và phân tích dữ liệu đánh giá sản phẩm laptop trên Shopee. Mục tiêu chính là rút ra các insight mô tả về hành vi đánh giá của người dùng như phân bố số sao, xu hướng thời gian và từ khóa nổi bật trong bình luận.
+Hệ thống được xây dựng để thu thập, làm sạch và phân tích dữ liệu đánh giá sản phẩm laptop trên FPTShop. Mục tiêu chính là rút ra các insight mô tả về hành vi đánh giá của người dùng như phân bố số sao, xu hướng thời gian và từ khóa nổi bật trong bình luận.
 
 ## 2. Công nghệ sử dụng (Tech Stack)
 
 - Python 3
 - Jupyter Notebook (.ipynb)
-- Requests: gửi HTTP request để lấy dữ liệu đánh giá
+- Requests: gửi HTTP request để lấy danh sách sản phẩm và dữ liệu đánh giá
 - Pandas: xử lý dữ liệu dạng bảng
 - Matplotlib, Seaborn: trực quan hóa dữ liệu
 - Regex, Unicodedata: chuẩn hóa văn bản tiếng Việt
@@ -17,11 +17,11 @@ Hệ thống được xây dựng để thu thập, làm sạch và phân tích 
 
 ```text
 .
-├─ 01_Crawl_Data.ipynb              # Thu thập dữ liệu review từ Shopee
+├─ 01_Crawl_Data.ipynb              # Thu thập dữ liệu review từ FPTShop
 ├─ 02_EDA_Preprocessing.ipynb       # Làm sạch và phân tích mô tả
 ├─ 03_Report_Artifacts.ipynb        # Tổng hợp bảng biểu cho báo cáo
 ├─ data/
-│  ├─ shopee_laptop_raw.csv         # Dữ liệu thô
+│  ├─ fptshop_laptop_raw.csv        # Dữ liệu thô
 │  └─ cleaned_reviews.csv           # Dữ liệu đã làm sạch
 ├─ outputs/
 │  ├─ eda_summary.csv               # Bảng thống kê tổng quan
@@ -35,15 +35,15 @@ Hệ thống được xây dựng để thu thập, làm sạch và phân tích 
 
 ## 4. Kiến trúc thành phần (Component Architecture)
 
-- Thành phần Thu thập dữ liệu: gọi API đánh giá sản phẩm từ Shopee theo từng sản phẩm.
+- Thành phần Thu thập dữ liệu: thu URL sản phẩm laptop từ trang tìm kiếm FPTShop, sau đó đọc dữ liệu đánh giá hiển thị trong HTML từng trang sản phẩm.
 - Thành phần Tiền xử lý: chuẩn hóa văn bản, xử lý thiếu dữ liệu, loại trùng và chuẩn hóa kiểu dữ liệu.
 - Thành phần Phân tích mô tả: tính thống kê cơ bản, tạo biểu đồ phân bố và xu hướng.
 - Thành phần Báo cáo: tổng hợp bảng biểu ra CSV để chèn vào báo cáo Word.
 
 ## 5. Luồng dữ liệu (Data Flow)
 
-1. Người dùng cung cấp danh sách URL sản phẩm laptop Shopee.
-2. Notebook thu thập gọi API theo phân trang và lưu dữ liệu thô vào CSV.
+1. Notebook thu thập gọi trang tìm kiếm FPTShop để lấy danh sách URL sản phẩm laptop.
+2. Notebook đọc dữ liệu đánh giá hiển thị trong HTML từng trang sản phẩm và lưu dữ liệu thô vào CSV.
 3. Notebook tiền xử lý đọc CSV thô, làm sạch văn bản và tạo dữ liệu sạch.
 4. Hệ thống phân tích dữ liệu sạch để tạo bảng thống kê và biểu đồ.
 5. Notebook tổng hợp xuất các bảng cuối cùng cho phần phụ lục báo cáo.
@@ -56,11 +56,14 @@ Hệ thống được xây dựng để thu thập, làm sạch và phân tích 
 
 ## 7. APIs / Routes cốt lõi (Core APIs/Routes)
 
-- Shopee ratings API:
-  - Endpoint: `https://shopee.vn/api/v2/item/get_ratings`
-  - Tham số chính: `shopid`, `itemid`, `offset`, `limit`, `filter`, `type`
+- FPTShop Search URL:
+  - Endpoint: `https://fptshop.com.vn/tim-kiem?s=laptop&sort=noi-bat&categories=may-tinh-xach-tay`
+  - Dùng để thu thập URL sản phẩm laptop theo trang (`page`)
+- FPTShop Product Page:
+  - Endpoint: `https://fptshop.com.vn/may-tinh-xach-tay/...`
+  - Dùng để trích xuất dữ liệu đánh giá hiển thị trong HTML
 - Tệp đầu ra lõi:
-  - `data/shopee_laptop_raw.csv`
+  - `data/fptshop_laptop_raw.csv`
   - `data/cleaned_reviews.csv`
   - `outputs/eda_summary.csv`
 
@@ -68,8 +71,8 @@ Hệ thống được xây dựng để thu thập, làm sạch và phân tích 
 
 ```mermaid
 graph TD
-    A[Danh sách URL sản phẩm Shopee] --> B[01_Crawl_Data.ipynb]
-    B --> C[data/shopee_laptop_raw.csv]
+    A[Trang tìm kiếm laptop FPTShop] --> B[01_Crawl_Data.ipynb]
+    B --> C[data/fptshop_laptop_raw.csv]
     C --> D[02_EDA_Preprocessing.ipynb]
     D --> E[data/cleaned_reviews.csv]
     D --> F[outputs: biểu đồ và bảng thống kê]
@@ -83,16 +86,16 @@ graph TD
 sequenceDiagram
     actor SV as Sinh viên
     participant NB1 as 01_Crawl_Data
-    participant API as Shopee API
-    participant CSV1 as shopee_laptop_raw.csv
+    participant WEB as FPTShop Web
+    participant CSV1 as fptshop_laptop_raw.csv
     participant NB2 as 02_EDA_Preprocessing
     participant CSV2 as cleaned_reviews.csv
     participant NB3 as 03_Report_Artifacts
 
-    SV->>NB1: Nhập danh sách URL laptop
-    NB1->>API: Gọi get_ratings theo offset/limit
-    API-->>NB1: Trả về danh sách review JSON
-    NB1->>NB1: Chống trùng + xử lý lỗi + ghép DataFrame
+    SV->>NB1: Chạy crawler với URL tìm kiếm FPTShop
+    NB1->>WEB: Lấy danh sách URL sản phẩm laptop
+    NB1->>WEB: Đọc dữ liệu đánh giá trong HTML từng sản phẩm
+    NB1->>NB1: Chuẩn hóa schema + chống trùng + xử lý lỗi
     NB1->>CSV1: Lưu dữ liệu thô
     SV->>NB2: Chạy tiền xử lý và EDA
     NB2->>CSV1: Đọc dữ liệu thô
