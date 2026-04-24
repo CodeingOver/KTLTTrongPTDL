@@ -8,6 +8,10 @@
 - Ưu tiên khối `detail-product-script` khi trích metadata sản phẩm để tránh lấy nhầm `brand`/`product_name` từ các khối JSON-LD hoặc nội dung liên quan khác trên trang.
 - Cập nhật `02_EDA_Preprocessing.ipynb` để giữ lại review thiếu `rating_star` trong `cleaned_reviews.csv`, chỉ loại các giá trị rating hỏng hoặc ngoài khoảng hợp lệ.
 - Khôi phục cell nạp dữ liệu đầu vào của notebook EDA và xác nhận lại pipeline làm sạch chạy ổn trên dữ liệu hiện có.
+- Bổ sung biểu đồ mới trong `02_EDA_Preprocessing.ipynb`: boxplot độ dài review theo số sao và bar chart Top 15 từ khóa xuất hiện nhiều nhất.
+- Bổ sung biểu đồ mới trong `03_Report_Artifacts.ipynb`: Top 12 sản phẩm theo số lượng review và biểu đồ tròn cơ cấu nhóm cảm xúc theo số sao.
+- Tinh chỉnh biểu đồ tròn sentiment trong `03_Report_Artifacts.ipynb`: đổi nhãn sang tiếng Việt có dấu, cải thiện bảng màu và bổ sung hiển thị đồng thời tỷ lệ phần trăm + số lượng để dễ đọc hơn.
+- Tối ưu chống chồng nhãn cho biểu đồ tròn sentiment: ẩn nhãn trực tiếp ở lát cắt nhỏ, chuyển chi tiết sang legend kèm tỷ lệ/số lượng và tách nhẹ các lát nhỏ bằng `explode`.
 
 - Dọn `01_Crawl_Data.ipynb` bằng cách xóa cell định nghĩa hàm trùng lặp để tránh ghi đè logic crawl comment theo phân trang khi chạy `Run All`.
 - Xác nhận notebook chỉ còn một cell định nghĩa hàm crawl chính và không còn thông báo cũ về việc "chưa phân trang sâu".
