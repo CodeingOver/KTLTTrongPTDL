@@ -4,6 +4,7 @@
 
 - Cập nhật `01_Crawl_Data.ipynb` để chỉ thu URL sản phẩm có `sku`, giữ nguyên query trên link sản phẩm và lưu thêm `product_url` vào từng dòng dữ liệu thô.
 - Sửa lỗi lấy nhầm nhánh/đường dẫn sản phẩm bằng cách loại bỏ các link breadcrumb/danh mục không phải trang sản phẩm trong luồng thu thập URL.
+- Chuyển bộ thu URL sang nhận diện thẻ sản phẩm thực tế trên trang tìm kiếm qua cặp `title + href`, vì FPTShop không còn gắn `?sku=` trong href của product card.
 - Ưu tiên khối `detail-product-script` khi trích metadata sản phẩm để tránh lấy nhầm `brand`/`product_name` từ các khối JSON-LD hoặc nội dung liên quan khác trên trang.
 - Cập nhật `02_EDA_Preprocessing.ipynb` để giữ lại review thiếu `rating_star` trong `cleaned_reviews.csv`, chỉ loại các giá trị rating hỏng hoặc ngoài khoảng hợp lệ.
 - Khôi phục cell nạp dữ liệu đầu vào của notebook EDA và xác nhận lại pipeline làm sạch chạy ổn trên dữ liệu hiện có.
