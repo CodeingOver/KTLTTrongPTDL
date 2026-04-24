@@ -1,12 +1,28 @@
 ﻿ten_cot,y_nghia
 review_id,Mã review duy nhất
 shop_id,Nguồn bán hoặc mã shop (FPTShop)
-item_id,Mã sản phẩm/UPC từ FPTShop
+item_id,Mã content dùng để gọi API comment của FPTShop
+product_name,Tên sản phẩm
+brand,Hãng sản phẩm
+price,Giá niêm yết hoặc giá tham chiếu
+final_price,Giá bán cuối cùng (nếu có)
+rating_count_total,Tổng số lượt đánh giá của sản phẩm
 user_id,Mã hoặc định danh người dùng đánh giá
 rating_star,Số sao đánh giá (1-5)
+review_title,Tiêu đề review (nếu có)
 comment,Nội dung review gốc
 comment_clean,Nội dung review sau làm sạch
+verified_purchase,Cờ xác nhận đã mua hàng (nếu có)
+image_product,Ảnh đại diện sản phẩm
+image_review,Ảnh đính kèm đánh giá (nếu có)
 created_at,Thời gian tạo review
 like_count,Số lượt hữu ích
+product_items,Biến thể/thuộc tính sản phẩm trong review (nếu có)
+reply_content,Nội dung phản hồi từ shop/quản trị (nếu có)
+reply_created_at,Thời gian phản hồi
+reply_user_id,Định danh người phản hồi
+reply_is_admin,Cờ phản hồi từ quản trị viên
+reply_like_count,Số lượt hữu ích của phản hồi
+has_reply,Cờ review có phản hồi từ shop/quản trị
 review_len,Độ dài ký tự của review
 source,Nguồn dữ liệu (FPTShop)
