@@ -1,5 +1,14 @@
 # CHANGELOG
 
+### 2026-04-24
+
+- Dọn `01_Crawl_Data.ipynb` bằng cách xóa cell định nghĩa hàm trùng lặp để tránh ghi đè logic crawl comment theo phân trang khi chạy `Run All`.
+- Xác nhận notebook chỉ còn một cell định nghĩa hàm crawl chính và không còn thông báo cũ về việc "chưa phân trang sâu".
+- Cập nhật `crawl_product_reviews` trong `01_Crawl_Data.ipynb`: tăng độ ổn định phân trang bằng cách tính `skipCount` theo số item thực nhận, thêm retry khi trang kế tiếp trả rỗng bất thường.
+- Điều chỉnh thông báo cuối để phân biệt trường hợp `totalCount` bao gồm cả phản hồi con (`children`) với trường hợp API ẩn dữ liệu theo trạng thái hiển thị.
+- Xác minh bằng Playwright rằng giao diện dùng phân trang số (`1`, `2`) và request trang 2 gửi `skipCount=6` với `content.id` riêng của hệ comment.
+- Sửa `extract_product_code` để ưu tiên trích `content.id` 12 chữ số mà frontend dùng cho comment API, thay vì mã hiển thị sản phẩm; nhờ đó crawl sản phẩm MSI Modern 15 đã lấy đủ `10/10` comment (trang 1: 6, trang 2: 4).
+
 ### 2026-04-23
 
 - Cập nhật `01_Crawl_Data.ipynb` để gọi API comment riêng của FPTShop (`bff-before-order/comment/list`) thay vì chỉ đọc khối comment đầu tiên trong HTML.
