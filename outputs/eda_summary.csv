@@ -1,9 +1,9 @@
 ﻿metric,value
-count_reviews,3780.0
+count_reviews,9088.0
 min_rating,1.0
 max_rating,5.0
 avg_rating,4.737
 median_rating,5.0
-avg_review_len,108.65
+avg_review_len,78.85
 min_review_len,2.0
-max_review_len,424.0
+max_review_len,837.0

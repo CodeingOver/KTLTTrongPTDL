@@ -2,6 +2,11 @@
 
 ### 2026-04-24
 
+- Cập nhật `01_Crawl_Data.ipynb` để chỉ thu URL sản phẩm có `sku`, giữ nguyên query trên link sản phẩm và lưu thêm `product_url` vào từng dòng dữ liệu thô.
+- Sửa lỗi lấy nhầm nhánh/đường dẫn sản phẩm bằng cách loại bỏ các link breadcrumb/danh mục không phải trang sản phẩm trong luồng thu thập URL.
+- Cập nhật `02_EDA_Preprocessing.ipynb` để giữ lại review thiếu `rating_star` trong `cleaned_reviews.csv`, chỉ loại các giá trị rating hỏng hoặc ngoài khoảng hợp lệ.
+- Khôi phục cell nạp dữ liệu đầu vào của notebook EDA và xác nhận lại pipeline làm sạch chạy ổn trên dữ liệu hiện có.
+
 - Dọn `01_Crawl_Data.ipynb` bằng cách xóa cell định nghĩa hàm trùng lặp để tránh ghi đè logic crawl comment theo phân trang khi chạy `Run All`.
 - Xác nhận notebook chỉ còn một cell định nghĩa hàm crawl chính và không còn thông báo cũ về việc "chưa phân trang sâu".
 - Cập nhật `crawl_product_reviews` trong `01_Crawl_Data.ipynb`: tăng độ ổn định phân trang bằng cách tính `skipCount` theo số item thực nhận, thêm retry khi trang kế tiếp trả rỗng bất thường.

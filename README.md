@@ -29,8 +29,8 @@ Dự án **không sử dụng Machine Learning** theo yêu cầu phạm vi hiệ
 
 ## Đầu ra chính
 
-- `data/fptshop_laptop_raw.csv`: dữ liệu thô sau crawl (bao gồm thêm metadata như `product_name`, `brand`, `price`, `final_price`, `rating_count_total`, `review_title`, `verified_purchase`, `image_product`, `image_review` nếu có).
-- `data/cleaned_reviews.csv`: dữ liệu đã làm sạch.
+- `data/fptshop_laptop_raw.csv`: dữ liệu thô sau crawl (bao gồm thêm metadata như `product_url`, `product_name`, `brand`, `price`, `final_price`, `rating_count_total`, `review_title`, `verified_purchase`, `image_product`, `image_review` nếu có).
+- `data/cleaned_reviews.csv`: dữ liệu đã làm sạch. Review thiếu `rating_star` vẫn được giữ lại; chỉ các giá trị rating hỏng hoặc ngoài khoảng hợp lệ mới bị loại.
 - `outputs/eda_summary.csv`: thống kê mô tả tổng quan.
 - `outputs/chart_rating_distribution.png`: biểu đồ phân bố số sao.
 - `outputs/chart_monthly_trend.png`: biểu đồ xu hướng review theo tháng (nếu có dữ liệu thời gian).
@@ -39,6 +39,7 @@ Dự án **không sử dụng Machine Learning** theo yêu cầu phạm vi hiệ
 ## Lưu ý khi crawl FPTShop
 
 - Crawler hiện chạy theo hướng HTTP thuần (`requests`) và lấy comment từ API `bff-before-order/comment/list` của FPTShop, sau đó lặp `skipCount`/`maxResultCount` để đi qua các trang comment.
+- Danh sách URL sản phẩm được lọc từ link có `sku` trên trang tìm kiếm để tránh lấy nhầm breadcrumb hoặc nhánh danh mục.
 - FPTShop có thể thay đổi cấu trúc dữ liệu theo thời điểm, nên cần theo dõi log số lượng review thu được ở mỗi sản phẩm.
 - Nếu gặp lỗi liên tiếp hoặc dữ liệu thu được thấp, tăng độ trễ giữa các request và giảm số lượng sản phẩm mỗi lượt chạy.
 - Một số phản hồi của quản trị viên có thể đi kèm trong `reply_content` nếu sản phẩm có comment được trả lời trực tiếp.

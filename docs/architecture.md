@@ -2,7 +2,7 @@
 
 ## 1. Tổng quan hệ thống (System Overview)
 
-Hệ thống được xây dựng để thu thập, làm sạch và phân tích dữ liệu đánh giá sản phẩm laptop trên FPTShop. Phần crawl hiện lấy comment qua API riêng của FPTShop và đi qua nhiều trang bình luận, nhờ đó dữ liệu đầu vào phản ánh đầy đủ hơn hành vi đánh giá của người dùng và cả phản hồi của quản trị viên khi có.
+Hệ thống được xây dựng để thu thập, làm sạch và phân tích dữ liệu đánh giá sản phẩm laptop trên FPTShop. Phần crawl hiện lấy comment qua API riêng của FPTShop, đi qua nhiều trang bình luận, lưu thêm `product_url` của từng sản phẩm và phản ánh đầy đủ hơn hành vi đánh giá của người dùng cũng như phản hồi của quản trị viên khi có.
 
 ## 2. Công nghệ sử dụng (Tech Stack)
 
@@ -36,15 +36,15 @@ Hệ thống được xây dựng để thu thập, làm sạch và phân tích 
 ## 4. Kiến trúc thành phần (Component Architecture)
 
 - Thành phần Thu thập dữ liệu: thu URL sản phẩm laptop từ trang tìm kiếm FPTShop, sau đó gọi API comment của từng sản phẩm theo `skipCount`/`maxResultCount` để lấy nhiều trang phản hồi, đồng thời trích metadata sản phẩm (tên, hãng, giá, ảnh, tổng lượt đánh giá).
-- Thành phần Tiền xử lý: chuẩn hóa văn bản, xử lý thiếu dữ liệu, loại trùng và chuẩn hóa kiểu dữ liệu.
+- Thành phần Tiền xử lý: chuẩn hóa văn bản, xử lý thiếu dữ liệu, loại trùng và chuẩn hóa kiểu dữ liệu; review thiếu `rating_star` được giữ lại trong dữ liệu sạch để phục vụ các phân tích sau.
 - Thành phần Phân tích mô tả: tính thống kê cơ bản, tạo biểu đồ phân bố và xu hướng.
 - Thành phần Báo cáo: tổng hợp bảng biểu ra CSV để chèn vào báo cáo Word.
 
 ## 5. Luồng dữ liệu (Data Flow)
 
 1. Notebook thu thập gọi trang tìm kiếm FPTShop để lấy danh sách URL sản phẩm laptop.
-2. Notebook gọi API comment của từng sản phẩm theo nhiều trang, trích metadata sản phẩm/review, đồng thời giữ lại phản hồi của quản trị viên nếu có, rồi lưu dữ liệu thô vào CSV.
-3. Notebook tiền xử lý đọc CSV thô, làm sạch văn bản và tạo dữ liệu sạch.
+2. Notebook gọi API comment của từng sản phẩm theo nhiều trang, trích metadata sản phẩm/review, giữ `product_url` trong từng dòng và đồng thời giữ lại phản hồi của quản trị viên nếu có, rồi lưu dữ liệu thô vào CSV.
+3. Notebook tiền xử lý đọc CSV thô, làm sạch văn bản, giữ các review thiếu `rating_star` và chỉ loại các giá trị rating hỏng hoặc ngoài khoảng hợp lệ trước khi tạo dữ liệu sạch.
 4. Hệ thống phân tích dữ liệu sạch để tạo bảng thống kê và biểu đồ.
 5. Notebook tổng hợp xuất các bảng cuối cùng cho phần phụ lục báo cáo.
 
@@ -118,6 +118,7 @@ erDiagram
         string review_id PK
       string shop_id
       string item_id
+          string product_url
       string product_name
       string brand
       int price
