@@ -8,6 +8,8 @@
 - Cập nhật luồng `fetch_product_reviews` để truyền `product_url` vào `extract_product_metadata`, phục vụ kiểm tra nhất quán metadata theo đúng sản phẩm đang crawl.
 - Sửa lỗi không lấy được giá khi schema trả `offers.price = 0`: chuẩn hóa ép số từ chuỗi có dấu phân cách, coi giá `<= 0` là không hợp lệ để tiếp tục fallback lấy `finalPrice/price` từ metadata trang sản phẩm.
 - Đồng bộ hậu xử lý giá trong metadata: nếu chỉ có một trong hai trường `price` hoặc `final_price` là giá dương thì tự đồng bộ sang trường còn lại để tránh lưu `0` ở dữ liệu thô.
+- Bổ sung trong `03_Report_Artifacts.ipynb` biểu đồ `Top 10 sản phẩm có rating trung bình cao nhất` (lọc ngưỡng tối thiểu số review), đồng thời xuất thêm bảng `outputs/report/table_top_products_by_rating.csv` và ảnh `outputs/report/chart_top_products_by_rating.png`.
+- Tinh chỉnh tiêu chí xếp hạng top sản phẩm trong `03_Report_Artifacts.ipynb`: sắp theo `avg_rating` giảm dần và tie-break theo `review_count` giảm dần; bổ sung cột `xep_hang` để đọc thứ hạng rõ ràng trong bảng xuất báo cáo.
 
 ### 2026-04-24
 
