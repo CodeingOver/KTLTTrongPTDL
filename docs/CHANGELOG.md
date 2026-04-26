@@ -2,6 +2,7 @@
 
 ### 2026-04-26
 
+- Tạo mới file báo cáo `Bao_cao_Phan_tich_Y_kien_FPTShop.md` tổng hợp đầy đủ mục tiêu, mô tả dữ liệu, quy trình xử lý, kết quả phân tích, biểu đồ minh họa và kết luận cho đề tài phân tích ý kiến người dùng trên dữ liệu đánh giá laptop FPTShop.
 - Cập nhật `01_Crawl_Data.ipynb` để giảm bắt nhầm metadata khi fallback regex: giới hạn vùng quét quanh `productAdvanceInfo` trước khi đọc `brand`/`price`/`final_price`.
 - Bổ sung hàm suy luận hãng từ `product_name` và `product_url`, dùng làm lớp kiểm tra chéo khi metadata trả về hãng không khớp nhận diện sản phẩm.
 - Thêm cơ chế tự sửa `brand` khi phát hiện lệch giữa brand trích xuất và brand suy luận (ví dụ tránh dồn sai về một hãng duy nhất ở các dòng cuối dữ liệu thô).
