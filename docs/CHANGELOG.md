@@ -1,5 +1,12 @@
 # CHANGELOG
 
+### 2026-04-26
+
+- Cập nhật `01_Crawl_Data.ipynb` để giảm bắt nhầm metadata khi fallback regex: giới hạn vùng quét quanh `productAdvanceInfo` trước khi đọc `brand`/`price`/`final_price`.
+- Bổ sung hàm suy luận hãng từ `product_name` và `product_url`, dùng làm lớp kiểm tra chéo khi metadata trả về hãng không khớp nhận diện sản phẩm.
+- Thêm cơ chế tự sửa `brand` khi phát hiện lệch giữa brand trích xuất và brand suy luận (ví dụ tránh dồn sai về một hãng duy nhất ở các dòng cuối dữ liệu thô).
+- Cập nhật luồng `fetch_product_reviews` để truyền `product_url` vào `extract_product_metadata`, phục vụ kiểm tra nhất quán metadata theo đúng sản phẩm đang crawl.
+
 ### 2026-04-24
 
 - Cập nhật `01_Crawl_Data.ipynb` để chỉ thu URL sản phẩm có `sku`, giữ nguyên query trên link sản phẩm và lưu thêm `product_url` vào từng dòng dữ liệu thô.
